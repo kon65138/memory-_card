@@ -3,5 +3,42 @@
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   margin: 0;
+  background-color: darkcyan;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#title {
+  font-size: 2vw;
+}
+
+.cardContainer {
+  padding: 1vw;
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(5, 1fr);
+  gap: 1vw;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2vw;
+}
+
+.cardName {
+  font-weight: bold;
+  padding: 0.5vw 0 0.5vw 0;
+}
+
+.card img {
+  max-width: 11vw;
 }

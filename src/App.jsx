@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
+import Card from './card.jsx';
 import './App.css';
 
 export default function App() {
@@ -13,7 +14,7 @@ export default function App() {
         const response = await fetch(url);
         const pokemonData = await response.json();
         setAllPokemon(pokemonData.results);
-        processPokemon(pokemonData.results);
+        processPokemon(pokemonData.results, setPickedPokemon);
       }
       getPokemon();
     }
@@ -24,13 +25,24 @@ export default function App() {
   return (
     <>
       <header>
-        <t1 id="title">Memory card game</t1>
+        <h1 id="title">Memory card game</h1>
       </header>
+      <div className="cardContainer">
+        {pickedPokemon.map((pokemon) => {
+          return (
+            <Card
+              pickedPokemon={pickedPokemon}
+              key={pokemon.id}
+              id={pokemon.id}
+            />
+          );
+        })}
+      </div>
     </>
   );
 }
 
-function processPokemon(data) {
+function processPokemon(data, setPickedPokemon) {
   let pickedIndexes = [];
   let processedData = [];
   for (let i = 0; i < 15; i++) {
@@ -41,7 +53,7 @@ function processPokemon(data) {
     pickedIndexes.push(index);
     getPokemonImg(data[index], processedData);
   }
-  console.log(processedData);
+  setPickedPokemon(processedData);
 }
 
 async function getPokemonImg(pokemon, processedData) {
@@ -49,5 +61,9 @@ async function getPokemonImg(pokemon, processedData) {
   const response = await fetch(url);
   const pokemonData = await response.json();
   const sprite = pokemonData.sprites.other['official-artwork'].front_default;
-  processedData.push({ name: pokemon.name, sprite: sprite });
+  processedData.push({
+    name: pokemon.name,
+    sprite: sprite,
+    id: processedData.length,
+  });
 }
