@@ -9,6 +9,7 @@ export default function App() {
   useEffect(() => {
     let ignore = false;
     if (!ignore) {
+      console.log('fetching data');
       async function getPokemon() {
         const url = 'https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0';
         const response = await fetch(url);
@@ -42,7 +43,7 @@ export default function App() {
   );
 }
 
-function processPokemon(data, setPickedPokemon) {
+async function processPokemon(data, setPickedPokemon) {
   let pickedIndexes = [];
   let processedData = [];
   for (let i = 0; i < 15; i++) {
@@ -51,18 +52,32 @@ function processPokemon(data, setPickedPokemon) {
       index = Math.floor(Math.random() * data.length - 1);
     } while (pickedIndexes.includes(index));
     pickedIndexes.push(index);
-    getPokemonImg(data[index], processedData);
+    await getPokemonImg(data[index], processedData);
   }
   setPickedPokemon(processedData);
 }
 
 async function getPokemonImg(pokemon, processedData) {
+  let sprite;
+  let name;
   const url = pokemon.url;
   const response = await fetch(url);
   const pokemonData = await response.json();
-  const sprite = pokemonData.sprites.other['official-artwork'].front_default;
+  if (pokemonData.sprites.other['official-artwork'].front_default) {
+    name = pokemonData.name;
+    sprite = pokemonData.sprites.other['official-artwork'].front_default;
+  } else {
+    const urlTwo = pokemonData.species.url;
+    const responseTwo = await fetch(urlTwo);
+    const twoData = await responseTwo.json();
+    const urlThree = twoData.varieties[0].pokemon.url;
+    const responseThree = await fetch(urlThree);
+    const threeData = await responseThree.json();
+    sprite = threeData.sprites.other['official-artwork'].front_default;
+    name = threeData.name;
+  }
   processedData.push({
-    name: pokemon.name,
+    name: name,
     sprite: sprite,
     id: processedData.length,
   });
