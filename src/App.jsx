@@ -5,17 +5,21 @@ import './App.css';
 
 export default function App() {
   const [allPokemon, setAllPokemon] = useState([]);
-  const [pickedPokemon, setPickedPokemon] = useState([]);
+  const [gameStats, setGameStats] = useState({
+    currentScore: 0,
+    highScore: 0,
+    clickedCards: [],
+    pickedPokemon: [],
+  });
   useEffect(() => {
     let ignore = false;
     if (!ignore) {
-      console.log('fetching data');
       async function getPokemon() {
         const url = 'https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0';
         const response = await fetch(url);
         const pokemonData = await response.json();
         setAllPokemon(pokemonData.results);
-        processPokemon(pokemonData.results, setPickedPokemon);
+        processPokemon(pokemonData.results, setGameStats);
       }
       getPokemon();
     }
@@ -27,12 +31,17 @@ export default function App() {
     <>
       <header>
         <h1 id="title">Memory card game</h1>
+        <div className="scoreContainer">
+          <div className="currentScore">{`current score:${gameStats.currentScore}`}</div>
+          <div className="highScore">{`high score:${gameStats.highScore}`}</div>
+        </div>
       </header>
       <div className="cardContainer">
-        {pickedPokemon.map((pokemon) => {
+        {gameStats.pickedPokemon.map((pokemon) => {
           return (
             <Card
-              pickedPokemon={pickedPokemon}
+              gameStats={gameStats}
+              setGameStats={setGameStats}
               key={pokemon.id}
               id={pokemon.id}
             />
@@ -43,7 +52,7 @@ export default function App() {
   );
 }
 
-async function processPokemon(data, setPickedPokemon) {
+async function processPokemon(data, setGameStats) {
   let pickedIndexes = [];
   let processedData = [];
   for (let i = 0; i < 15; i++) {
@@ -54,7 +63,12 @@ async function processPokemon(data, setPickedPokemon) {
     pickedIndexes.push(index);
     await getPokemonImg(data[index], processedData);
   }
-  setPickedPokemon(processedData);
+  setGameStats({
+    currentScore: 0,
+    highScore: 0,
+    clickedCards: [],
+    pickedPokemon: processedData,
+  });
 }
 
 async function getPokemonImg(pokemon, processedData) {

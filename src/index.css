@@ -10,13 +10,15 @@ body {
 }
 
 header {
+  margin: 0 2vw 0 2vw;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 #title {
-  font-size: 2vw;
+  font-size: 3vw;
+  flex: 1;
 }
 
 .cardContainer {

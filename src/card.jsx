@@ -1,13 +1,23 @@
-export default function Card({ pickedPokemon, id }) {
+export default function Card({ gameStats, setGameStats, id }) {
+  function handleClick(e) {
+    if (gameStats.clickedCards.includes(id)) {
+    } else {
+      setGameStats({
+        ...gameStats,
+        clickedCards: [...gameStats.clickedCards, id],
+      });
+    }
+  }
   return (
-    <button className={`card num${id}`}>
+    <button className={`card num${id}`} onClick={handleClick}>
       <div className="imgContainer">
         <img
-          src={pickedPokemon[id].sprite}
-          alt={`official artwork for ${pickedPokemon[id].name} pokemon`}
+          src={gameStats.pickedPokemon[id].sprite}
+          alt={`official artwork for ${gameStats.pickedPokemon[id].name} pokemon`}
         />
       </div>
-      <div className="cardName">{pickedPokemon[id].name}</div>
+      <div className="cardName">{gameStats.pickedPokemon[id].name}</div>
+      <div>{gameStats.clickedCards}</div>
     </button>
   );
 }
