@@ -2,10 +2,26 @@ export default function Card({ gameStats, setGameStats, id }) {
   function handleClick(e) {
     if (gameStats.clickedCards.includes(id)) {
     } else {
-      setGameStats({
-        ...gameStats,
-        clickedCards: [...gameStats.clickedCards, id],
-      });
+      if (gameStats.currentScore + 1 > gameStats.highScore) {
+        setGameStats({
+          ...gameStats,
+          highScore: gameStats.highScore + 1,
+          clickedCards: [...gameStats.clickedCards, id],
+          currentScore: gameStats.currentScore + 1,
+          pickedPokemon: gameStats.pickedPokemon.sort(
+            () => Math.random() - 0.5,
+          ),
+        });
+      } else {
+        setGameStats({
+          ...gameStats,
+          clickedCards: [...gameStats.clickedCards, id],
+          currentScore: gameStats.currentScore + 1,
+          pickedPokemon: gameStats.pickedPokemon.sort(
+            () => Math.random() - 0.5,
+          ),
+        });
+      }
     }
   }
   return (

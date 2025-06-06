@@ -27,6 +27,9 @@ export default function App() {
       ignore = true;
     };
   }, []);
+  function seeder() {
+    let tempCpy = gameStats.pickedPokemon.slice();
+  }
   return (
     <>
       <header>
