@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
+import Popup from './popup.jsx';
 import Card from './card.jsx';
 import './App.css';
 
@@ -10,6 +11,7 @@ export default function App() {
     highScore: 0,
     clickedCards: [],
     pickedPokemon: [],
+    gameStatus: 'ongoing',
   });
   useEffect(() => {
     let ignore = false;
@@ -27,9 +29,6 @@ export default function App() {
       ignore = true;
     };
   }, []);
-  function seeder() {
-    let tempCpy = gameStats.pickedPokemon.slice();
-  }
   return (
     <>
       <header>
@@ -40,6 +39,11 @@ export default function App() {
         </div>
       </header>
       <div className="cardContainer">
+        <Popup
+          gameStats={gameStats}
+          setGameStats={setGameStats}
+          gameStatus={gameStats.gameStatus}
+        ></Popup>
         {gameStats.pickedPokemon.map((pokemon) => {
           return (
             <Card
@@ -71,18 +75,21 @@ async function processPokemon(data, setGameStats) {
     highScore: 0,
     clickedCards: [],
     pickedPokemon: processedData,
+    gameStatus: 'ongoing',
   });
 }
 
 async function getPokemonImg(pokemon, processedData) {
   let sprite;
   let name;
+  let id;
   const url = pokemon.url;
   const response = await fetch(url);
   const pokemonData = await response.json();
   if (pokemonData.sprites.other['official-artwork'].front_default) {
     name = pokemonData.name;
     sprite = pokemonData.sprites.other['official-artwork'].front_default;
+    id = pokemonData.id;
   } else {
     const urlTwo = pokemonData.species.url;
     const responseTwo = await fetch(urlTwo);
@@ -92,10 +99,11 @@ async function getPokemonImg(pokemon, processedData) {
     const threeData = await responseThree.json();
     sprite = threeData.sprites.other['official-artwork'].front_default;
     name = threeData.name;
+    id = threeData.id;
   }
   processedData.push({
     name: name,
     sprite: sprite,
-    id: processedData.length,
+    id: id,
   });
 }
