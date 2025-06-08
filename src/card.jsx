@@ -5,7 +5,7 @@ export default function Card({ gameStats, setGameStats, id }) {
   }
   const index = arr.indexOf(id);
 
-  function handleClick(e) {
+  function handleClick() {
     if (gameStats.clickedCards.includes(id)) {
       setGameStats({
         ...gameStats,

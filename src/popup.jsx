@@ -4,7 +4,7 @@ export default function Popoup({
   gameStatus,
   repickPokemon,
 }) {
-  async function handleClick(e) {
+  async function handleClick() {
     setGameStats({ ...gameStats, pickedPokemon: [], gameStatus: 'ongoing' });
     await repickPokemon();
   }
