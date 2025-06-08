@@ -29,6 +29,9 @@ export default function App() {
       ignore = true;
     };
   }, []);
+  function repickPokemon() {
+    processPokemon(allPokemon, setGameStats, gameStats);
+  }
   return (
     <>
       <header>
@@ -40,6 +43,7 @@ export default function App() {
       </header>
       <div className="cardContainer">
         <Popup
+          repickPokemon={repickPokemon}
           gameStats={gameStats}
           setGameStats={setGameStats}
           gameStatus={gameStats.gameStatus}
@@ -59,7 +63,7 @@ export default function App() {
   );
 }
 
-async function processPokemon(data, setGameStats) {
+async function processPokemon(data, setGameStats, gameStats) {
   let pickedIndexes = [];
   let processedData = [];
   for (let i = 0; i < 15; i++) {
@@ -70,13 +74,23 @@ async function processPokemon(data, setGameStats) {
     pickedIndexes.push(index);
     await getPokemonImg(data[index], processedData);
   }
-  setGameStats({
-    currentScore: 0,
-    highScore: 0,
-    clickedCards: [],
-    pickedPokemon: processedData,
-    gameStatus: 'ongoing',
-  });
+  if (gameStats === undefined) {
+    setGameStats({
+      currentScore: 0,
+      highScore: 0,
+      clickedCards: [],
+      pickedPokemon: processedData,
+      gameStatus: 'ongoing',
+    });
+  } else {
+    setGameStats({
+      ...gameStats,
+      currentScore: 0,
+      clickedCards: [],
+      pickedPokemon: processedData,
+      gameStatus: 'ongoing',
+    });
+  }
 }
 
 async function getPokemonImg(pokemon, processedData) {

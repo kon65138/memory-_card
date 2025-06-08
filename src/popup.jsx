@@ -1,4 +1,12 @@
-export default function Popoup({ gameStats, setGameStats, gameStatus }) {
+export default function Popoup({
+  gameStats,
+  setGameStats,
+  gameStatus,
+  repickPokemon,
+}) {
+  async function handleClick(e) {
+    await repickPokemon();
+  }
   return (
     <div
       className="cover"
@@ -29,7 +37,9 @@ export default function Popoup({ gameStats, setGameStats, gameStatus }) {
           <div className="highScorePopup">{`high score: ${gameStats.highScore}`}</div>
           <div className="currentScorePopup">{`current score: ${gameStats.currentScore}`}</div>
         </div>
-        <button className="tryAgain">Try Again</button>
+        <button className="tryAgain" onClick={handleClick}>
+          Try Again
+        </button>
       </div>
     </div>
   );

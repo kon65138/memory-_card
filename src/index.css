@@ -59,12 +59,13 @@ header {
 }
 
 .tryAgain {
+  font-size: 1.5vw;
   margin-top: 1vw;
   background-color: red;
   border: 2px solid black;
   border-radius: 1vw;
   width: 10vw;
-  height: 2vw;
+  height: 3vw;
   transition:
     background 250ms ease-in-out,
     transform 150ms ease;

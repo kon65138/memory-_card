@@ -23,16 +23,17 @@ export default function Card({ gameStats, setGameStats, id }) {
             currentScore: gameStats.currentScore + 1,
             gameStatus: 'won',
           });
+        } else {
+          setGameStats({
+            ...gameStats,
+            highScore: gameStats.highScore + 1,
+            clickedCards: [...gameStats.clickedCards, id],
+            currentScore: gameStats.currentScore + 1,
+            pickedPokemon: gameStats.pickedPokemon.sort(
+              () => Math.random() - 0.5,
+            ),
+          });
         }
-        setGameStats({
-          ...gameStats,
-          highScore: gameStats.highScore + 1,
-          clickedCards: [...gameStats.clickedCards, id],
-          currentScore: gameStats.currentScore + 1,
-          pickedPokemon: gameStats.pickedPokemon.sort(
-            () => Math.random() - 0.5,
-          ),
-        });
       } else {
         setGameStats({
           ...gameStats,
