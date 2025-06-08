@@ -10,7 +10,6 @@ export default function Card({ gameStats, setGameStats, id }) {
       setGameStats({
         ...gameStats,
         clickedCards: [],
-        currentScore: 0,
         gameStatus: 'lost',
       });
     } else {

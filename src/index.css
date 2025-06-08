@@ -95,3 +95,7 @@ header {
 .card img {
   max-width: 11vw;
 }
+
+.loading {
+  font-size: 5vw;
+}

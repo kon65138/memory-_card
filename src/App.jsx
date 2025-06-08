@@ -35,7 +35,7 @@ export default function App() {
   return (
     <>
       <header>
-        <h1 id="title">Memory card game</h1>
+        <h1 id="title">Pokemon Memory Card Game</h1>
         <div className="scoreContainer">
           <div className="currentScore">{`current score:${gameStats.currentScore}`}</div>
           <div className="highScore">{`high score:${gameStats.highScore}`}</div>
@@ -48,6 +48,11 @@ export default function App() {
           setGameStats={setGameStats}
           gameStatus={gameStats.gameStatus}
         ></Popup>
+        {(() => {
+          if (gameStats.pickedPokemon.length < 1) {
+            return <div className="loading">Loading...</div>;
+          }
+        })()}
         {gameStats.pickedPokemon.map((pokemon) => {
           return (
             <Card
